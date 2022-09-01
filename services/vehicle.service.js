@@ -28,12 +28,12 @@ async function createVehicle(driverId, vehicle){
   return {message};
 }
 
-async function updateVehicle(vehicle){
+async function updateVehicle(vehicleId, vehicle){
   const result = await db.query(
     `UPDATE vehicle 
     SET plate='${vehicle.plate}', model='${vehicle.model}', type='${vehicle.type}', 
     capacity='${vehicle.capacity}'
-    WHERE id=${vehicle.id}` 
+    WHERE id=${vehicleId}` 
   );
 
   let message = 'Error in updating vehicle';
@@ -45,8 +45,23 @@ async function updateVehicle(vehicle){
   return {message};
 }
 
+async function removeVehicle(vehicleId){
+  const result = await db.query(
+    `DELETE FROM vehicle WHERE id=${vehicleId}`
+  );
+
+  let message = 'Error in deleting vehicle';
+
+  if (result.affectedRows) {
+    message = 'Vehicle deleted successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
   getVehiclesByDriver,
   createVehicle,
-  updateVehicle
+  updateVehicle,
+  removeVehicle
 }
