@@ -20,4 +20,13 @@ router.post('/driver/:driverId', async function(req, res, next) {
   }
 });
 
+router.put('/driver/:driverId/vehicle', async function(req, res, next) {
+  try {
+    res.json(await vehicles.updateVehicle(req.body));
+  } catch (err) {
+    console.error(`Error while updating vehicle`, err.message);
+    next(err);
+  }
+});
+
 module.exports = router;

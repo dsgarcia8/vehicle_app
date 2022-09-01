@@ -14,7 +14,6 @@ async function getVehiclesByDriver(driverId){
 }
 
 async function createVehicle(driverId, vehicle){
-  console.log(vehicle)
   const result = await db.query(
     `INSERT INTO vehicle (driver_id, plate, model, type, capacity)
     VALUES (${driverId}, '${vehicle.plate}', '${vehicle.model}', '${vehicle.type}', '${vehicle.capacity}')`
@@ -29,7 +28,25 @@ async function createVehicle(driverId, vehicle){
   return {message};
 }
 
+async function updateVehicle(vehicle){
+  const result = await db.query(
+    `UPDATE vehicle 
+    SET plate='${vehicle.plate}', model='${vehicle.model}', type='${vehicle.type}', 
+    capacity='${vehicle.capacity}'
+    WHERE id=${vehicle.id}` 
+  );
+
+  let message = 'Error in updating vehicle';
+
+  if (result.affectedRows) {
+    message = 'Vehicle updated successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
   getVehiclesByDriver,
-  createVehicle
+  createVehicle,
+  updateVehicle
 }
